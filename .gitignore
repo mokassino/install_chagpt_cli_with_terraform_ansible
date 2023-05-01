@@ -1,0 +1,11 @@
+terraform.tfstate
+terraform.tfvars
+terraform.tfstate.backup
+
+.terraform*
+
+hcloud.tf
+
+roles/*.hcloud.yml
+
+roles/install_chatgpt/vars/*

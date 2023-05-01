@@ -20,6 +20,7 @@ resource "hcloud_server" "smane" {
     ipv4_enabled = true
     ipv6_enabled = true
   }
-  ssh_keys = ["Your-key-1", "Your-key-2"]
+  
+  ssh_keys = "${var.ssh_keys_name}"
   location = "nbg1"
 }

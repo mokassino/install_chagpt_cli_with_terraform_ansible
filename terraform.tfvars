@@ -1,2 +1,2 @@
 token=""
-ssh_keys_name= []
+ssh_keys_name= [""]

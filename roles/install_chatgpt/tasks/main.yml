@@ -17,20 +17,16 @@
     - name: install dependencies
       shell: 'cd {{ chatgpt_location }} && npm i'
       
-    #- name: add a little script
-    #  shell: 'echo "#!/usr/bin/bash" > /opt/node-chatgpt-api/chatgpt-cli.sh && echo "npm run cli " >> /opt/node-chatgpt-api/chatgpt-cli.sh'
-
     - name: copy script
       copy: 
         src: "chatgpt-cli.sh"
         dest: "{{ chatgpt_location }}/chatgpt-cli.sh"
 
-    # ??
     - name: copy settings file to destination
       template:
         src: "templates/settings.js.j2"
         dest: "{{ chatgpt_location }}/settings.js"
 
     - name: link the script 
-      shell: 'rm -f /usr/bin/chatgpt-cli && chmod +x {{ chatgpt_location }}/chatgpt-cli.sh && ln -s {{ chatgpt_location }}/chatgpt-cli.sh /usr/bin/chatgpt-cli'
+      shell: 'rm -f /usr/bin/chatgpt-cli && cd {{ chatgpt_location }} && cd {{ chatgpt_location }} && chmod +x {{ chatgpt_location }}/chatgpt-cli.sh && ln -s {{ chatgpt_location }}/chatgpt-cli.sh /usr/bin/chatgpt-cli'
 

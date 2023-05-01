@@ -1,0 +1,36 @@
+---
+    - name: install nodejs part 1
+      shell: 'curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh && sh ./nodesource_setup.sh'
+
+    - name: install nodejs part 2
+      ansible.builtin.apt:
+        name: "nodejs"
+        state: latest
+
+    - name: run apt-get dist-upgrade
+      ansible.builtin.apt:
+        upgrade: dist
+
+    - name: clone the node-chatgpt-api repository
+      shell: 'rm -r /opt/* && git clone https://github.com/waylaidwanderer/node-chatgpt-api {{ chatgpt_location }} '
+
+    - name: install dependencies
+      shell: 'cd {{ chatgpt_location }} && npm i'
+      
+    #- name: add a little script
+    #  shell: 'echo "#!/usr/bin/bash" > /opt/node-chatgpt-api/chatgpt-cli.sh && echo "npm run cli " >> /opt/node-chatgpt-api/chatgpt-cli.sh'
+
+    - name: copy script
+      copy: 
+        src: "chatgpt-cli.sh"
+        dest: "{{ chatgpt_location }}/chatgpt-cli.sh"
+
+    # ??
+    - name: copy settings file to destination
+      template:
+        src: "templates/settings.js.j2"
+        dest: "{{ chatgpt_location }}/settings.js"
+
+    - name: link the script 
+      shell: 'rm -f /usr/bin/chatgpt-cli && chmod +x {{ chatgpt_location }}/chatgpt-cli.sh && ln -s {{ chatgpt_location }}/chatgpt-cli.sh /usr/bin/chatgpt-cli'
+

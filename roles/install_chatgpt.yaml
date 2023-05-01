@@ -1,0 +1,6 @@
+- name: Tomcat deployment playbook
+  hosts: hcloud
+  remote_user: root
+  gather_facts: False
+  roles:
+    - install_chatgpt

@@ -1,0 +1,9 @@
+---
+    - name: git clone PandoraAI
+      shell: "rm -rf /opt/PandoraAI && git clone https://github.com/waylaidwanderer/PandoraAI {{ }}"
+
+    - name: create .env file
+      shell: "echo 'API_BASE_URL=http://localhost:3000' >> /opt/PandoraAI/.env"
+    
+    - name: start the development server
+      shell: "cd /opt/PandoraAI && npm run dev &"

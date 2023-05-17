@@ -1,6 +1,7 @@
-- name: Tomcat deployment playbook
+- name: Deploy node-chat-api and PandoraAI
   hosts: hcloud
   remote_user: root
   gather_facts: False
   roles:
     - install_chatgpt
+    - install_pandora

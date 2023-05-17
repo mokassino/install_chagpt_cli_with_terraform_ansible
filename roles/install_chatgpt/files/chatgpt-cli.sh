@@ -1,3 +1,3 @@
 #! /usr/bin/bash
 
-npm run cli
+cd /opt/node-chatgpt-api/ && npm start

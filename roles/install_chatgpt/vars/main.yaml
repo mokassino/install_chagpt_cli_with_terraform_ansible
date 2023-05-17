@@ -1,3 +1,5 @@
-chatgpt_location: "/opt/node-chatgpt-api"
-ansible_ssh_private_key_file: ""
+chatgpt_location: "/opt/node-chatgpt-api" # if you like you can change this, otherwise that's ok
+ansible_ssh_private_key_file: "/path/to/ssh"
 cookie: ""
+host: "0.0.0.0" #i suggest you to not change this
+myport: 3001 # remember that the port must be different from the front-end

@@ -1,6 +1,6 @@
 ---
     - name: install nodejs part 1
-      shell: 'curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh && sh ./nodesource_setup.sh'
+      shell: 'curl -sL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh && sh ./nodesource_setup.sh'
 
     - name: install nodejs part 2
       ansible.builtin.apt:
@@ -12,7 +12,7 @@
         upgrade: dist
 
     - name: clone the node-chatgpt-api repository
-      shell: 'rm -r /opt/* && git clone https://github.com/waylaidwanderer/node-chatgpt-api {{ chatgpt_location }} '
+      shell: 'rm -rf /opt/* && git clone https://github.com/waylaidwanderer/node-chatgpt-api {{ chatgpt_location }} '
 
     - name: install dependencies
       shell: 'cd {{ chatgpt_location }} && npm i'
@@ -22,11 +22,18 @@
         src: "chatgpt-cli.sh"
         dest: "{{ chatgpt_location }}/chatgpt-cli.sh"
 
+    - name: set right permissions
+      shell: "chmod ug+x {{ chatgpt_location }}/chatgpt-cli.sh"
+
     - name: copy settings file to destination
       template:
         src: "templates/settings.js.j2"
         dest: "{{ chatgpt_location }}/settings.js"
 
-    - name: link the script 
-      shell: 'rm -f /usr/bin/chatgpt-cli && cd {{ chatgpt_location }} && chmod +x {{ chatgpt_location }}/chatgpt-cli.sh && ln -s {{ chatgpt_location }}/chatgpt-cli.sh /usr/bin/chatgpt-cli'
+    - name: copy systemd script to run chatgpt-cli.sh
+      copy: 
+        src: "node-chatgpt-api.service"
+        dest: "/etc/systemd/system/node-chatgpt-api.service"
 
+    - name: start the node-chatgpt-api service
+      shell: "sudo systemctl start node-chatgpt-api.service"

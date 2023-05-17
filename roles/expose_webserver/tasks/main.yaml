@@ -1,8 +1,34 @@
 ---
-  - name: install nginx and certbot
+  - name: install nginx
     ansible.builtin.apt:
-      name: "nginx certbot"
+      name: "nginx"
       state: "latest"
   
+  - name: install snapd
+    ansible.builtin.apt:
+      name: "snapd"
+      state: latest
+  
+  - name: install certbot
+    ansible.builtin.snap:
+      name: certbot 
+      state: present
+      classic: yes
+
+  - name: link executable to /usr/bin 
+    shell: "sudo ln -sf /snap/bin/certbot /usr/bin/certbot"
+    
+  - name: copy settings file to destination
+    template:
+        src: "pandora.conf.j2"
+        dest: "/etc/nginx/sites-available/pandora.conf"
+  
+  - name: link pandora.conf inside sites-enabled
+    shell: "ln -sf /etc/nginx/sites-available/pandora.conf /etc/nginx/sites-enabled/pandora.conf && sudo nginx -t"
+
   - name: start nginx 
     shell: "sudo systemctl enable --now nginx"
+
+
+  
+  

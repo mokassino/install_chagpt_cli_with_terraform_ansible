@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Node chatgpt api
+After=network.target
+
+[Service]
+ExecStart=/opt/node-chatgpt-api/chatgpt-cli.sh
+User=root
+
+[Install]
+WantedBy=multi-user.target

@@ -5,3 +5,4 @@
   roles:
     - install_chatgpt
     - install_pandora
+    - expose_webserver

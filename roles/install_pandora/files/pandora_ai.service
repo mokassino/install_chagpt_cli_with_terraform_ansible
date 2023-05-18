@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Node chatgpt api
+After=network.target
+
+[Service]
+ExecStart=/opt/PandoraAI/run_pandora_ai.sh
+User=root
+
+[Install]
+WantedBy=multi-user.target

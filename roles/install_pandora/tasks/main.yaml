@@ -1,9 +1,30 @@
 ---
     - name: git clone PandoraAI
-      shell: "rm -rf /opt/PandoraAI && git clone https://github.com/waylaidwanderer/PandoraAI {{ }}"
+      shell: "rm -rf /opt/PandoraAI && git clone https://github.com/waylaidwanderer/PandoraAI {{ pandora_location }}"
 
     - name: create .env file
-      shell: "echo 'API_BASE_URL=http://localhost:3000' >> /opt/PandoraAI/.env"
+      shell: "cp /opt/PandoraAI/.env.example /opt/PandoraAI/.env && echo 'API_BASE_URL=http://{{ host }}:3001' > /opt/PandoraAI/.env"
     
-    - name: start the development server
-      shell: "cd /opt/PandoraAI && npm run dev &"
+    # I'm going to install consola first because it works
+    # If i try 'npm i' first it gives me an error that he doesn't found the consola package...
+    - name: install needed packages for Pandora AI
+      shell: "cd {{ pandora_location }} && npm i consola && npm i"
+
+    - name: build for production
+      shell: "cd {{ pandora_location }} && npm build"
+
+    - name: copy script
+      copy: 
+        src: "run_pandora_ai.sh"
+        dest: "{{ pandora_location }}/run_pandora_ai.sh"
+    
+    - name: set right permissions
+      shell: "chmod ug+x {{ pandora_location }}/run_pandora_ai.sh"
+    
+    - name: copy systemd script to run pandora_ai.sh
+      copy: 
+        src: "pandora_ai.service"
+        dest: "/etc/systemd/system/pandora_ai.service"
+
+    - name: start the pandora_ai.service
+      shell: "sudo systemctl start pandora_ai.service"

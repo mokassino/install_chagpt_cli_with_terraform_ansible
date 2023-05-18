@@ -1,2 +1,3 @@
-chatgpt_location: "/opt/PandoraAI"
-ansible_ssh_private_key_file: ""
+pandora_location: "/opt/PandoraAI"
+ansible_ssh_private_key_file: "/path/to/ssh/keyfile"
+host: "example.org"
